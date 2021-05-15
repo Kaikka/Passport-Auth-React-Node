@@ -41,6 +41,36 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Passport
+passport.use(
+  new LocalStrategy((username, password, done) => {
+    User.findOne({ username: username }, (err: any, user: any) => {
+      if (err) throw err;
+      if (!user) return done(null, false);
+      bcrypt.compare(password, user.password, (err, result) => {
+        if (err) throw err;
+        if (result) {
+          return done(null, user);
+        } else {
+          return done(null, false);
+        }
+      });
+    });
+  })
+);
+
+passport.serializeUser((user: any, cb) => {
+  cb(null, user.id);
+});
+
+passport.deserializeUser((id: string, cb) => {
+  User.findOne({ _id: id }, (err: any, user: any) => {
+    const userInformation = {
+      username: user.username,
+      isAdmin: user.isAdmin,
+    };
+    cb(err, userInformation);
+  });
+});
 
 // Routes
 app.post("/register", async (req: Request, res: Response) => {
@@ -67,6 +97,17 @@ app.post("/register", async (req: Request, res: Response) => {
       res.send("Success, user added");
     }
   });
+});
+
+app.post(
+  "/login",
+  passport.authenticate("local", (req, res) => {
+    res.send("Successfully Authenticated");
+  })
+);
+
+app.get("/user", (req, res) => {
+  res.send(req.user);
 });
 
 app.listen(4000, () => {
