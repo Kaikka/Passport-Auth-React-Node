@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 
 export default function Register() {
   const [username, setUsername] = useState<string>("");
@@ -17,7 +17,7 @@ export default function Register() {
           withCredentials: true,
         }
       )
-      .then((res) => {
+      .then((res: AxiosResponse) => {
         if (res.data === "User Already Exists") {
           console.log(res.data);
         }
