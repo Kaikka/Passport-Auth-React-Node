@@ -67,6 +67,7 @@ passport.deserializeUser((id: string, cb) => {
     const userInformation = {
       username: user.username,
       isAdmin: user.isAdmin,
+      id: user._id,
     };
     cb(err, userInformation);
   });
@@ -147,7 +148,16 @@ app.post("/deleteUser", isAdministratorMiddleware, async (req, res) => {
 app.get("/getAllUsers", isAdministratorMiddleware, async (req, res) => {
   await User.find({}, (err: Error, data: UserInterface[]) => {
     if (err) throw err;
-    res.send(data);
+    const filteredUsers: any = [];
+    data.forEach((item: any) => {
+      const userInformation = {
+        id: item._id,
+        username: item.username,
+        isAdmin: item.isAdmin,
+      };
+      filteredUsers.push(userInformation);
+    });
+    res.send(filteredUsers);
   });
 });
 
