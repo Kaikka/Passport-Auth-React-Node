@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { myContext } from "../Pages/Context";
-import Axios from "axios";
+import Axios, { AxiosResponse } from "axios";
 
 export default function NavBar() {
   const ctx = useContext(myContext);
@@ -9,9 +9,9 @@ export default function NavBar() {
   const logout = () => {
     Axios.get("http://localhost:4000/logout", {
       withCredentials: true,
-    }).then((res) => {
+    }).then((res: AxiosResponse) => {
       if (res.data === "User logged out successfully") {
-        // Not thebest way of doing this. History would be to prefer...I think :^)
+        // Not the best way of doing this. History would be to prefer...I think :^)
         window.location.href = "/";
       }
     });
