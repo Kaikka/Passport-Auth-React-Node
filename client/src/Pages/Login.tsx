@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 
 export default function Login() {
   const [username, setUsername] = useState<string>("");
@@ -18,7 +18,7 @@ export default function Login() {
         }
       )
       .then(
-        (res) => {
+        (res: AxiosResponse) => {
           if (res.data === "User logged in successfully") {
             window.location.href = "/";
           }
