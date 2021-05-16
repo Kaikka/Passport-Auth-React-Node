@@ -1,0 +1,23 @@
+{
+  "name": "Passport-Auth-React-Node",
+  "version": "1.0.0",
+  "description": "A little learning project based on https://www.youtube.com/watch?v=Gwru3BueuiE",
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently \"cd backend && npm start\" \"cd client && npm start\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kaikka/Passport-Auth-React-Node.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Kaikka/Passport-Auth-React-Node/issues"
+  },
+  "homepage": "https://github.com/Kaikka/Passport-Auth-React-Node#readme",
+  "dependencies": {
+    "concurrently": "^6.1.0"
+  }
+}
