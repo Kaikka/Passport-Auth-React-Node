@@ -10,9 +10,13 @@ export default function NavBar() {
     Axios.get("http://localhost:4000/logout", {
       withCredentials: true,
     }).then((res) => {
-      console.log(res);
+      if (res.data === "User logged out successfully") {
+        // Not thebest way of doing this. History would be to prefer...I think :^)
+        window.location.href = "/";
+      }
     });
   };
+
   return (
     <div className="NavContainer">
       {ctx ? (

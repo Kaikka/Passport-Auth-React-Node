@@ -100,7 +100,7 @@ app.post("/register", async (req: Request, res: Response) => {
 });
 
 app.post("/login", passport.authenticate("local"), (req, res) => {
-  res.send("Successfully Authenticated");
+  res.send("User logged in successfully");
 });
 
 app.get("/user", (req, res) => {

@@ -1,9 +1,6 @@
-import React, { useContext } from "react";
-import { myContext } from "./Context";
+import React from "react";
 
 export default function Homepage() {
-  //const ctx = useContext(myContext);
-  //console.log(ctx);
   return (
     <div>
       <p>Homepage</p>
