@@ -94,10 +94,33 @@ app.post("/register", async (req: Request, res: Response) => {
         password: hashedPassword,
       });
       await newUser.save();
-      res.send("Success, user added");
+      res.send("User registered successfully");
     }
   });
 });
+
+const isAdministratorMiddleware = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { user }: any = req;
+  if (user) {
+    User.findOne(
+      { username: user.username },
+      (err: any, doc: UserInterface) => {
+        if (err) throw err;
+        if (doc?.isAdmin) {
+          next();
+        } else {
+          res.send("Sorry, only admins can perform this.");
+        }
+      }
+    );
+  } else {
+    res.send("Sorry, you aren't logged in.");
+  }
+};
 
 app.post("/login", passport.authenticate("local"), (req, res) => {
   res.send("User logged in successfully");
@@ -110,7 +133,22 @@ app.get("/user", (req, res) => {
 app.get("/logout", (req, res) => {
   req.logout();
   res.send("User logged out successfully");
-  //res.redirect("/");
+});
+
+app.post("/deleteUser", isAdministratorMiddleware, async (req, res) => {
+  const { id } = req.body;
+  // @ts-ignore
+  await User.findByIdAndDelete(id, (err: Error) => {
+    if (err) throw err;
+  });
+  res.send("User deleted successfully");
+});
+
+app.get("/getAllUsers", isAdministratorMiddleware, async (req, res) => {
+  await User.find({}, (err: Error, data: UserInterface[]) => {
+    if (err) throw err;
+    res.send(data);
+  });
 });
 
 app.listen(4000, () => {
