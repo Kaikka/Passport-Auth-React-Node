@@ -17,11 +17,16 @@ export default function Login() {
           withCredentials: true,
         }
       )
-      .then((res) => {
-        if (res.data === "User logged in successfully") {
-          window.location.href = "/";
+      .then(
+        (res) => {
+          if (res.data === "User logged in successfully") {
+            window.location.href = "/";
+          }
+        },
+        () => {
+          console.log("Failed login attempt");
         }
-      });
+      );
   };
 
   return (
