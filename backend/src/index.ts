@@ -107,6 +107,12 @@ app.get("/user", (req, res) => {
   res.send(req.user);
 });
 
+app.get("/logout", (req, res) => {
+  req.logout();
+  res.send("User logged out successfully");
+  //res.redirect("/");
+});
+
 app.listen(4000, () => {
   console.log("Server started");
 });
