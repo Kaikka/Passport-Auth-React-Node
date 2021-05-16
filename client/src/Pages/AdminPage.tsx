@@ -1,38 +1,40 @@
 import React, { useEffect, useState, useContext } from "react";
-import Axios from "axios";
+import Axios, { AxiosResponse } from "axios";
 import { myContext } from "./Context";
+import { UserInterface } from "../Interfaces/Interfaces";
 
 export default function AdminPage() {
   const ctx = useContext(myContext);
-  const [data, setData] = useState<any>();
+
+  const [data, setData] = useState<UserInterface[]>();
   const [selectedUser, setSelectedUser] = useState<string>();
   useEffect(() => {
     Axios.get("http://localhost:4000/getAllUsers", {
       withCredentials: true,
-    }).then((res: any) => {
+    }).then((res: AxiosResponse) => {
       setData(
-        res.data.filter((item: any) => {
+        res.data.filter((item: UserInterface) => {
           return item.username !== ctx.username;
         })
       );
     });
-  }, []);
+  }, [ctx]);
 
   if (!data) {
     return null;
   }
 
   const deleteUser = () => {
-    let userid: any;
-    data.forEach((item: any) => {
+    let userid: string;
+    data.forEach((item: UserInterface) => {
       if (item.username === selectedUser) {
-        userid = item._id;
+        userid = item.id;
       }
     });
 
     Axios.post(
       "http://localhost:4000/deleteUser",
-      { id: userid },
+      { id: userid! },
       {
         withCredentials: true,
       }
@@ -49,7 +51,7 @@ export default function AdminPage() {
         id="deleteUser"
       >
         <option id="Select a user">Select a user</option>
-        {data.map((item: any) => {
+        {data.map((item: UserInterface) => {
           return <option id={item.username}>{item.username}</option>;
         })}
       </select>
